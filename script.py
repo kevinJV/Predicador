@@ -38,12 +38,11 @@ func_matriz_a = [
 def w(sigma):
     return np.random.normal(0, sigma)
 
-def predicted_step(pos_x, pos_y, vel_x, vel_y, sig_v, sig_p, observer_coor):
+def predicted_step(pos_x, pos_y, vel_x, vel_y, sig_v, sig_p, observer_coor, iterator):
     w_pos_x = w(sig_p)
     w_pos_y = w(sig_p)
     w_vel_x = w(sig_v)
     w_vel_y = w(sig_v)
-
 
     step_arr = np.array([pos_x, pos_y, vel_x, vel_y])
     vel_arr = np.array([vel_x, vel_y, 0, 0])
@@ -51,18 +50,19 @@ def predicted_step(pos_x, pos_y, vel_x, vel_y, sig_v, sig_p, observer_coor):
     arr = np.add(np.add(step_arr, vel_arr), w_arr)
     
     r = np.sqrt((observer_coor[0]-pos_x)**2+(observer_coor[1]-pos_y)**2)
-    print("R: ", r)
+    print("R", ": ", r)
     # theta = np.arctan((observer_coor[0]-pos_x)/(observer_coor[1]-pos_y))
     theta = math.atan((observer_coor[0]-pos_x)/(observer_coor[1]-pos_y))
     #print("arch: ", (observer_coor[0]-pos_x)/(observer_coor[1]-pos_y))
     print("Theta: ", math.degrees(theta))
     #print(observer_coor[0], "-", pos_x, "/", observer_coor[1], "-", pos_y)
 
-    predicted_pos_noise_arr.append([w_pos_x, w_pos_y])
-    predicted_vel_noise_arr.append([w_vel_x, w_vel_y])
-    predicted_steps.append([w_pos_x, w_pos_y])
-    predicted_vel.append([w_vel_x, w_vel_y])
-    predicted_positions.append([arr[0], arr[1]])
+    print(iterator)
+    predicted_pos_noise_arr[iterator].append([w_pos_x, w_pos_y])
+    predicted_vel_noise_arr[iterator].append([w_vel_x, w_vel_y])
+    predicted_steps[iterator].append([w_pos_x, w_pos_y])
+    predicted_vel[iterator].append([w_vel_x, w_vel_y])
+    predicted_positions[iterator].append([arr[0], arr[1]])
 
     return arr[0], arr[1], arr[2], arr[3]
 
@@ -141,11 +141,18 @@ if __name__ == "__main__":
         theta = 0        
         # Observador
         observer_coor = [10, 10]
+        predicted_pos_noise_arr.append([])
+        predicted_vel_noise_arr.append([])
+        predicted_steps.append([])
+        predicted_vel.append([])
+        predicted_positions.append([])
         for i in range(0, epochs):
-            pos_x, pos_y, vel_x, vel_y = predicted_step(pos_x, pos_y, vel_x, vel_y, sig_v, sig_p, observer_coor)
-        # print("a ", np.array(noise_arr))
-        # print("steps ", np.array(steps))
-        # print("positions ", np.array(positions))
+            pos_x, pos_y, vel_x, vel_y = predicted_step(pos_x, pos_y, vel_x, vel_y, sig_v, sig_p, observer_coor, k)
+        print("Predicted positions ", np.array(predicted_positions))    
+        print("Predicted pos noises: ", np.array(predicted_pos_noise_arr))
+        print("Predicted vel noises: ", np.array(predicted_vel_noise_arr))
+        print("Predicted steps ", np.array(predicted_steps))
+        print("Predicted vel ", np.array(predicted_vel))
 
     plt.title('Gráficas')
     plt.xlabel("x")
