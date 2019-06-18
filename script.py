@@ -148,11 +148,11 @@ if __name__ == "__main__":
         predicted_positions.append([])
         for i in range(0, epochs):
             pos_x, pos_y, vel_x, vel_y = predicted_step(pos_x, pos_y, vel_x, vel_y, sig_v, sig_p, observer_coor, k)
-        print("Predicted positions ", np.array(predicted_positions))    
-        print("Predicted pos noises: ", np.array(predicted_pos_noise_arr))
-        print("Predicted vel noises: ", np.array(predicted_vel_noise_arr))
-        print("Predicted steps ", np.array(predicted_steps))
-        print("Predicted vel ", np.array(predicted_vel))
+    print("Predicted positions ", np.array(predicted_positions))    
+    print("Predicted pos noises: ", np.array(predicted_pos_noise_arr))
+    print("Predicted vel noises: ", np.array(predicted_vel_noise_arr))
+    print("Predicted steps ", np.array(predicted_steps))
+    print("Predicted vel ", np.array(predicted_vel))
 
     plt.title('Gráficas')
     plt.xlabel("x")
