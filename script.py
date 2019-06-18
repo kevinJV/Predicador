@@ -39,10 +39,10 @@ def w(sigma):
     return np.random.normal(0, sigma)
 
 def predicted_step(pos_x, pos_y, vel_x, vel_y, sig_v, sig_p, observer_coor, iterator):
-    w_pos_x = w(sig_p)
-    w_pos_y = w(sig_p)
-    w_vel_x = w(sig_v)
-    w_vel_y = w(sig_v)
+    w_pos_x = w(sig_p * 2)
+    w_pos_y = w(sig_p * 2)
+    w_vel_x = w(sig_v * 2)
+    w_vel_y = w(sig_v * 2)
 
     step_arr = np.array([pos_x, pos_y, vel_x, vel_y])
     vel_arr = np.array([vel_x, vel_y, 0, 0])
@@ -164,10 +164,16 @@ if __name__ == "__main__":
     y = get_vector(ideal_positions, 1)        
     plt.plot(x, y, color='k', lw=2)
 
+    # Ideal
+    color_num = 0
+    for predicado in predicted_positions:
+        x = get_vector(predicado, 0)    
+        y = get_vector(predicado, 1)        
+        plt.plot(x, y, color=colors[color_num], lw=2)
+        color_num += 1
+
     # Real
     x = get_vector(real_positions, 0)
     y = get_vector(real_positions, 1)    
     plt.plot(x, y, color='y', lw=3)
     plt.show()
-
-    
